@@ -3,13 +3,10 @@ import os, json
 from datetime import datetime, time
 ts = int("1572798640")
 
-
-print(os.getcwd())
-
 print(datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S'))
 
 
-cities = "/Users/rohanmjha/Desktop/caliBoyWeather/citiesCoords.txt"
+cities = "./citiesCoords.txt"
 
 def createCitiesJSON(citiestxt):
     #
@@ -42,5 +39,13 @@ def createCitiesJSON(citiestxt):
     with open(citiesJSONDirectory, "w+") as file:
         file.write(citiesJSON)
     return citiesDict
+
+def citiesLoadFromJSON(citiesJSON):
+    with open(citiesJSON, "r") as file:
+        citiesDict = json.load(file)
+        print(citiesDict)
+    return citiesDict
+
+citiesLoadFromJSON("/Users/rohanmjha/Desktop/caliBoyWeather/cities.json")
 
 createCitiesJSON(cities)

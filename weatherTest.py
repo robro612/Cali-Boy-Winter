@@ -42,14 +42,13 @@ def weatherAPICall(key, latitude, longitude, save=True, weatherPath = weatherPat
 key = None
 #YOUR DARKSKY API KEY HERE
 
-#DONT CALL THIS FRIVILOUSLY
+# DONT CALL THIS FRIVILOUSLY
 # weather_dict = weatherAPICall(key, 40.4432, -79.9439)
 #
 # with open('/Users/rohanmjha/Desktop/caliBoyWeather/weather.json', 'w') as json_file:
 #     json.dump(weather_dict, json_file)
 #
 # print(weather_dict[2]["currently"])
-
 
 
 
@@ -65,8 +64,15 @@ def loadWeatherData(weatherpath):
 	return (data)
 
 def caliBoyWinterStringify(currently):
+    #takes in the currently weather data dictionary and outputs our final string
 	temp = currently["temperature"]
-	out = f"It is currently {temp} degrees out"
+	precipChance = currently["precipProbability"]
+	windSpeed = currently["windSpeed"]
+	precipType = "rain" if temp > 32 else "snow"
+	out = f"It is currently {temp} degrees out. "
+	out += f"There is a {precipChance} percent chance of "
+	out += f"{precipType}, "
+	out += f"with wind speeds of {windSpeed} miles per hour."
 	return out
 
 print(caliBoyWinterStringify(loadWeatherData(weatherPath)[0]))
