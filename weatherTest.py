@@ -1,6 +1,6 @@
 import requests, json
 #
-# key = "e475a7308554cf3bfa041415ac9dca15"
+# key = ""
 #
 # g = f"{key}"
 #
@@ -36,7 +36,10 @@ def weatherAPICall(key, latitude, longitude):
 	hourly = weatherDict["hourly"]
 	return (currently, hourly, weatherDict)
 
-weather_dict = weatherAPICall("e475a7308554cf3bfa041415ac9dca15", 40.4432, -79.9439)
+key = None
+#YOUR DARKSKY API KEY HERE
+
+weather_dict = weatherAPICall(key, 40.4432, -79.9439)
 
 with open('/Users/rohanmjha/Desktop/caliBoyWeather/weather.json', 'w') as json_file:
     json.dump(weather_dict, json_file)
