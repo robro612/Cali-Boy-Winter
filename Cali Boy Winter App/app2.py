@@ -4,7 +4,7 @@ import requests
 import json
 
 # UNCOMMENT THIS WITH API KEY WHEN RUNNING FR
-key = "e475a7308554cf3bfa041415ac9dca15"
+key = ""
 
 def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # takes in darksky API key, and coordinates of city
