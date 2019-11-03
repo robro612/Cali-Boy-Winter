@@ -29,14 +29,14 @@ def citiesLoadFromJSON(citiesJSON):
         return citiesDict
 def caliBoyWinterStringify(currently):
     #takes in the currently weather data dictionary and outputs our final string
-	temp = currently["temperature"]
-	precipChance = currently["precipProbability"]
-	windSpeed = currently["windSpeed"]
-	precipType = "rain" if temp > 32 else "snow"
-	out = f"It is currently {temp} degrees out. "
-	out += f"There is a {precipChance} percent chance of "
-	out += f"{precipType}, "
-	out += f"with wind speeds of {windSpeed} miles per hour."
+    temp = currently["temperature"]
+    precipChance = currently["precipProbability"]
+    windSpeed = currently["windSpeed"]
+    precipType = "rain" if temp > 32 else "snow"
+    out = f"It is currently {temp} degrees out. "
+    out += f"There is a {precipChance} percent chance of "
+    out += f"{precipType}, "
+    out += f"with wind speeds of {windSpeed} miles per hour."
     out = f"It is currently {temp} degrees out. There is a {precipChance} percent chance of {precipType}, with wind speeds of {windSpeed} miles per hour."
     qZips = int((70 - temp) // 10)
     skiGear = True if temp <= 32 else False
@@ -48,7 +48,7 @@ def caliBoyWinterStringify(currently):
     if rainGear:
         out += "Docs and a baseball cap for the rain (cause who needs unbrellas)\n"
 
-	return out
+    return out
 
 def wrapper(key, city):
     citiesDict = citiesLoadFromJSON("./cities.json")
@@ -78,4 +78,4 @@ def indexPost():
     return index(city)
 
 if __name__ == "__main__":
-	app.run(port="8001")
+	app.run(port="8007")
