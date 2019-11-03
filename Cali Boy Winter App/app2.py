@@ -20,4 +20,4 @@ def indexPost():
     return index(city)
 
 if __name__ == "__main__":
-	app.run(port="8001")
+	app.run(port="8004")
