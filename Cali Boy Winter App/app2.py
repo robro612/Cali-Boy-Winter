@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for
+import json
 import requests
 import json
 
@@ -27,6 +28,7 @@ def citiesLoadFromJSON(citiesJSON):
         citiesDict = json.load(file)
         print(citiesDict)
         return citiesDict
+
 def caliBoyWinterStringify(currently):
     #takes in the currently weather data dictionary and outputs our final string
     temp = currently["temperature"]
@@ -44,9 +46,10 @@ def caliBoyWinterStringify(currently):
     out += "\n Based on this we reccomend:\n"
     out += f"{qZips} Patagonia Quarter-Zips for warmth\n"
     if skiGear:
-        out += "Parka, gloves, and thermals for the frigid temperature\n"
+        out += "Parka, gloves, and thermals under your skinny jeans for the frigid temperature\n"
     if rainGear:
-        out += "Docs and a baseball cap for the rain (cause who needs unbrellas)\n"
+        out += "Doc Martens and a baseball cap for the rain (cause who needs unbrellas)\n"
+
 
     return out
 
@@ -64,10 +67,10 @@ app = Flask(__name__)
 @app.route('/')
 def index(city=None):
     if(city == None):
-        return render_template('index.html', )
+        return render_template('index2.html', city="Select a city!")
     else:
         caliString = wrapper(key, city)
-        return render_template('index.html', city=city, caliString=caliString)
+        return render_template('index2.html', city=city, caliString=caliString)
 
 @app.route('/', methods=['POST'])
 def indexPost():
