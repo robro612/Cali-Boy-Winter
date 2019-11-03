@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, request, url_for
+import json
 import requests
 
 # UNCOMMENT THIS WITH API KEY WHEN RUNNING FR
-# key =
+# key = "e475a7308554cf3bfa041415ac9dca15"
 
 def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # takes in darksky API key, and coordinates of city
@@ -26,34 +27,36 @@ def citiesLoadFromJSON(citiesJSON):
         citiesDict = json.load(file)
         print(citiesDict)
         return citiesDict
+
 def caliBoyWinterStringify(currently):
     #takes in the currently weather data dictionary and outputs our final string
-	temp = currently["temperature"]
-	precipChance = currently["precipProbability"]
-	windSpeed = currently["windSpeed"]
-	precipType = "rain" if temp > 32 else "snow"
-	out = f"It is currently {temp} degrees out. "
-	out += f"There is a {precipChance} percent chance of "
-	out += f"{precipType}, "
-	out += f"with wind speeds of {windSpeed} miles per hour."
-    out = f"It is currently {temp} degrees out. There is a {precipChance} percent chance of {precipType}, with wind speeds of {windSpeed} miles per hour."
+    temp = currently["temperature"]
+    precipChance = currently["precipProbability"]
+    windSpeed = currently["windSpeed"]
+    precipType = "rain" if temp > 32 else "snow"
+    out = f"It is currently {temp} degrees out. "
+    out += f"There is a {precipChance} percent chance of "
+    out += f"{precipType}, "
+    out += f"with wind speeds of {windSpeed} miles per hour."
     qZips = (70 - temp) // 10
+
     skiGear = True if temp <= 32 else False
     rainGear = True if precipType == "rain" else False
     out += "\n Based on this we reccomend:\n"
     out += f"{qZips} Patagonia Quarter-Zips for warmth\n"
     if skiGear:
-        out += "Parka, gloves, and thermals for the frigid temperature\n"
+        out += "Parka, gloves, and thermals under your skinny jeans for the frigid temperature\n"
     if rainGear:
-        out += "Docs and a baseball cap for the rain (cause who needs unbrellas)\n"
+        out += "Doc Martens and a baseball cap for the rain (cause who needs unbrellas)\n"
 
-	return out
+
+    return out
 
 def wrapper(key, city):
     citiesDict = citiesLoadFromJSON("./cities.json")
     lat = citiesDict[city][0]
     long = citiesDict[city][1]
-    currently = weatherAPICall(key, lat, long)
+    currently = weatherAPICall(key, lat, long)[0]
     caliString = caliBoyWinterStringify(currently)
     return caliString
 
@@ -63,10 +66,10 @@ app = Flask(__name__)
 @app.route('/')
 def index(city=None):
     if(city == None):
-        return render_template('index.html', )
+        return render_template('index2.html', city="Select a city!")
     else:
         caliString = wrapper(key, city)
-        return render_template('index.html', city=city, caliString=caliString)
+        return render_template('index2.html', city=city, caliString=caliString)
 
 @app.route('/', methods=['POST'])
 def indexPost():
