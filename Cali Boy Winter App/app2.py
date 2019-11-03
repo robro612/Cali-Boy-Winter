@@ -4,7 +4,7 @@ import requests
 import json
 
 # UNCOMMENT THIS WITH API KEY WHEN RUNNING FR
-key = ""
+key = "e475a7308554cf3bfa041415ac9dca15"
 
 def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # takes in darksky API key, and coordinates of city
@@ -13,7 +13,7 @@ def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # the all of the data from the call
 # see https://darksky.net/dev/docs for specifics on parsing the dics
 # saves new call to json unless otherwise specified
-	apiURL = f"https://api.darksky.net/forecast/{key}/{latitude},{longitude}"
+	apiURL = f"https://api.darksky.net/forecast/{key}/{latitude},{-longitude}"
 	response = requests.get(apiURL)
 	weatherDict = response.json()
 	currently = weatherDict["currently"]
@@ -33,6 +33,7 @@ def caliBoyWinterStringify(currently):
     #takes in the currently weather data dictionary and outputs our final string
     temp = currently["temperature"]
     precipChance = currently["precipProbability"]
+    precipChance = int(precipChance * 100)
     windSpeed = currently["windSpeed"]
     precipType = "rain" if temp > 32 else "snow"
     out = f"It is currently {temp} degrees out. "
@@ -40,9 +41,9 @@ def caliBoyWinterStringify(currently):
     out += f"{precipType}, "
     out += f"with wind speeds of {windSpeed} miles per hour."
     out = f"It is currently {temp} degrees out. There is a {precipChance} percent chance of {precipType}, with wind speeds of {windSpeed} miles per hour."
-    qZips = int((70 - temp) // 10)
+    qZips = int((75 - temp) // 9)
     skiGear = True if temp <= 32 else False
-    rainGear = True if precipType == "rain" else False
+    rainGear = True if precipType == "rain"  and precipChance > 30 else False
     out += "\n Based on this we reccomend:\n"
     out += f"{qZips} Patagonia Quarter-Zips for warmth\n"
     if skiGear:
@@ -54,7 +55,7 @@ def caliBoyWinterStringify(currently):
     return out
 
 def wrapper(key, city):
-    citiesDict = citiesLoadFromJSON("./cities.json")
+    citiesDict = citiesLoadFromJSON("/Users/rohanmjha/Desktop/caliBoyWeather/Cali Boy Winter App/cities.json")
     lat = citiesDict[city][0]
     long = citiesDict[city][1]
     currently = weatherAPICall(key, lat, long)[0]
@@ -81,4 +82,4 @@ def indexPost():
     return index(city)
 
 if __name__ == "__main__":
-	app.run(port="8007")
+	app.run(port="5000")
