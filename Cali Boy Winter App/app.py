@@ -1,6 +1,22 @@
 from flask import Flask, render_template, redirect, request, url_for
 import requests
 
+def weatherAPICall(key, latitude, longitude, save=True, weatherPath = weatherPath):
+# takes in darksky API key, and coordinates of city
+# (+ is north/east, - is south/east)
+# returns currently and hourly dicts of data, as well as weatherDict which is
+# the all of the data from the call
+# see https://darksky.net/dev/docs for specifics on parsing the dics
+# saves new call to json unless otherwise specified
+	apiURL = f"https://api.darksky.net/forecast/{key}/{latitude},{longitude}"
+	response = requests.get(apiURL)
+	weatherDict = response.json()
+	currently = weatherDict["currently"]
+	hourly = weatherDict["hourly"]
+	if save:
+		saveWeatherData(weatherPath, weatherDict)
+	return (currently, hourly, weatherDict)
+
 def citiesLoadFromJSON(citiesJSON):
     # loads cities dictionary
     with open(citiesJSON, "r") as file:
@@ -23,25 +39,6 @@ def caliBoyWinterStringify(currently):
 
 
 app = Flask(__name__)
-
-
-
-
-def weatherAPICall(key, latitude, longitude, save=True, weatherPath = weatherPath):
-# takes in darksky API key, and coordinates of city
-# (+ is north/east, - is south/east)
-# returns currently and hourly dicts of data, as well as weatherDict which is
-# the all of the data from the call
-# see https://darksky.net/dev/docs for specifics on parsing the dics
-# saves new call to json unless otherwise specified
-	apiURL = f"https://api.darksky.net/forecast/{key}/{latitude},{longitude}"
-	response = requests.get(apiURL)
-	weatherDict = response.json()
-	currently = weatherDict["currently"]
-	hourly = weatherDict["hourly"]
-	if save:
-		saveWeatherData(weatherPath, weatherDict)
-	return (currently, hourly, weatherDict)
 
 @app.route('/')
 def index(city=None):
