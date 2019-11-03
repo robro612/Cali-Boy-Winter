@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, request, url_for
 import requests
+import json
 
 # UNCOMMENT THIS WITH API KEY WHEN RUNNING FR
-# key =
+key = ""
 
 def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # takes in darksky API key, and coordinates of city
@@ -37,7 +38,7 @@ def caliBoyWinterStringify(currently):
 	out += f"{precipType}, "
 	out += f"with wind speeds of {windSpeed} miles per hour."
     out = f"It is currently {temp} degrees out. There is a {precipChance} percent chance of {precipType}, with wind speeds of {windSpeed} miles per hour."
-    qZips = (70 - temp) // 10
+    qZips = int((70 - temp) // 10)
     skiGear = True if temp <= 32 else False
     rainGear = True if precipType == "rain" else False
     out += "\n Based on this we reccomend:\n"
@@ -53,7 +54,7 @@ def wrapper(key, city):
     citiesDict = citiesLoadFromJSON("./cities.json")
     lat = citiesDict[city][0]
     long = citiesDict[city][1]
-    currently = weatherAPICall(key, lat, long)
+    currently = weatherAPICall(key, lat, long)[0]
     caliString = caliBoyWinterStringify(currently)
     return caliString
 
@@ -63,17 +64,10 @@ app = Flask(__name__)
 @app.route('/')
 def index(city=None):
     if(city == None):
-<<<<<<< HEAD
-        return render_template('index.html')
-    else:
-        # do actual stuff here
-        return render_template('index.html', **locals())
-=======
         return render_template('index.html', )
     else:
         caliString = wrapper(key, city)
         return render_template('index.html', city=city, caliString=caliString)
->>>>>>> 467457b4db205e75a9c736683b6057ef785aea8f
 
 @app.route('/', methods=['POST'])
 def indexPost():
@@ -84,8 +78,4 @@ def indexPost():
     return index(city)
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-	app.run(port="5004")
-=======
 	app.run(port="8001")
->>>>>>> 467457b4db205e75a9c736683b6057ef785aea8f
