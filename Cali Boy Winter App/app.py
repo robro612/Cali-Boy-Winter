@@ -29,25 +29,27 @@ def citiesLoadFromJSON(citiesJSON):
 
 def caliBoyWinterStringify(currently):
     #takes in the currently weather data dictionary and outputs our final string
-	temp = currently["temperature"]
-	precipChance = currently["precipProbability"]
-	windSpeed = currently["windSpeed"]
-	precipType = "rain" if temp > 32 else "snow"
-	out = f"It is currently {temp} degrees out. "
-	out += f"There is a {precipChance} percent chance of "
-	out += f"{precipType}, "
-	out += f"with wind speeds of {windSpeed} miles per hour."
-    qZips = (70 - temp)//10
+    temp = currently["temperature"]
+    precipChance = currently["precipProbability"]
+    windSpeed = currently["windSpeed"]
+    precipType = "rain" if temp > 32 else "snow"
+    out = f"It is currently {temp} degrees out. "
+    out += f"There is a {precipChance} percent chance of "
+    out += f"{precipType}, "
+    out += f"with wind speeds of {windSpeed} miles per hour."
+    qZips = (70 - temp) // 10
+
     skiGear = True if temp <= 32 else False
-    rainGear = True if precipType == "rain" else: False
+    rainGear = True if precipType == "rain" else False
     out += "\n Based on this we reccomend:\n"
     out += f"{qZips} Patagonia Quarter-Zips for warmth\n"
     if skiGear:
-        out += "Parka, gloves, and thermals for the frigid temperature\n"
+        out += "Parka, gloves, and thermals under your skinny jeans for the frigid temperature\n"
     if rainGear:
-        out += "Docs and a baseball cap for the rain (cause who needs unbrellas)\n"
+        out += "Doc Martens and a baseball cap for the rain (cause who needs unbrellas)\n"
 
-	return out
+
+    return out
 
 def wrapper(key, city):
     citiesDict = citiesLoadFromJSON("./cities.json")
