@@ -41,21 +41,21 @@ def caliBoyWinterStringify(currently):
     out += f"{precipType}, "
     out += f"with wind speeds of {windSpeed} miles per hour."
     out = f"It is currently {temp} degrees out. There is a {precipChance} percent chance of {precipType}, with wind speeds of {windSpeed} miles per hour."
-    qZips = int((75 - temp) // 9)
+    qZips = max(0,int((75 - temp) // 9))
     skiGear = True if temp <= 32 else False
-    rainGear = True if precipType == "rain"  and precipChance > 30 else False
+    rainGear = True if precipType == "rain"  and precipChance > 20 else False
     out += "\n Based on this we reccomend:\n"
     out += f"{qZips} Patagonia Quarter-Zips for warmth\n"
     if skiGear:
         out += "Parka, gloves, and thermals under your skinny jeans for the frigid temperature\n"
     if rainGear:
-        out += "Doc Martens and a baseball cap for the rain (cause who needs unbrellas)\n"
+        out += "Doc Martens and a baseball cap for the rain (cause who needs umbrellas)\n"
 
 
     return out
 
 def wrapper(key, city):
-    citiesDict = citiesLoadFromJSON("/Users/rohanmjha/Desktop/caliBoyWeather/Cali Boy Winter App/cities.json")
+    citiesDict = citiesLoadFromJSON("./cities.json")
     lat = citiesDict[city][0]
     long = citiesDict[city][1]
     currently = weatherAPICall(key, lat, long)[0]
