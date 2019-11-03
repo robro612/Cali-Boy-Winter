@@ -6,10 +6,10 @@ app = Flask(__name__)
 @app.route('/')
 def index(city=None):
     if(city == None):
-        return render_template('index.html')
+        return render_template('index2.html')
     else:
         # do actual stuff here
-        return render_template('index.html', **locals())
+        return render_template('index2.html', **locals())
 
 @app.route('/', methods=['POST'])
 def indexPost():
