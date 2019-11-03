@@ -1,9 +1,10 @@
 from flask import Flask, render_template, redirect, request, url_for
 import json
 import requests
+import json
 
 # UNCOMMENT THIS WITH API KEY WHEN RUNNING FR
-# key = "e475a7308554cf3bfa041415ac9dca15"
+key = ""
 
 def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # takes in darksky API key, and coordinates of city
@@ -30,16 +31,16 @@ def citiesLoadFromJSON(citiesJSON):
 
 def caliBoyWinterStringify(currently):
     #takes in the currently weather data dictionary and outputs our final string
-    temp = currently["temperature"]
-    precipChance = currently["precipProbability"]
-    windSpeed = currently["windSpeed"]
-    precipType = "rain" if temp > 32 else "snow"
-    out = f"It is currently {temp} degrees out. "
-    out += f"There is a {precipChance} percent chance of "
-    out += f"{precipType}, "
-    out += f"with wind speeds of {windSpeed} miles per hour."
-    qZips = (70 - temp) // 10
-
+	temp = currently["temperature"]
+	precipChance = currently["precipProbability"]
+	windSpeed = currently["windSpeed"]
+	precipType = "rain" if temp > 32 else "snow"
+	out = f"It is currently {temp} degrees out. "
+	out += f"There is a {precipChance} percent chance of "
+	out += f"{precipType}, "
+	out += f"with wind speeds of {windSpeed} miles per hour."
+    out = f"It is currently {temp} degrees out. There is a {precipChance} percent chance of {precipType}, with wind speeds of {windSpeed} miles per hour."
+    qZips = int((70 - temp) // 10)
     skiGear = True if temp <= 32 else False
     rainGear = True if precipType == "rain" else False
     out += "\n Based on this we reccomend:\n"

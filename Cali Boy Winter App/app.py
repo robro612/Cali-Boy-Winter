@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for
 import requests
 
 # UNCOMMENT THIS WITH API KEY WHEN RUNNING FR
-# key =
+key = ""
 
 def weatherAPICall(key, latitude, longitude, save=False, weatherPath=None):
 # takes in darksky API key, and coordinates of city
@@ -37,7 +37,7 @@ def caliBoyWinterStringify(currently):
     out += f"There is a {precipChance} percent chance of "
     out += f"{precipType}, "
     out += f"with wind speeds of {windSpeed} miles per hour."
-    qZips = (70 - temp) // 10
+    qZips = int((70 - temp) // 10)
 
     skiGear = True if temp <= 32 else False
     rainGear = True if precipType == "rain" else False
@@ -47,15 +47,13 @@ def caliBoyWinterStringify(currently):
         out += "Parka, gloves, and thermals under your skinny jeans for the frigid temperature\n"
     if rainGear:
         out += "Doc Martens and a baseball cap for the rain (cause who needs unbrellas)\n"
-
-
     return out
 
 def wrapper(key, city):
     citiesDict = citiesLoadFromJSON("./cities.json")
     lat = citiesDict[city][0]
     long = citiesDict[city][1]
-    currently = weatherAPICall(key, lat, long)
+    currently = weatherAPICall(key, lat, long)[0]
     caliString = caliBoyWinterStringify(currently)
     return caliString
 
